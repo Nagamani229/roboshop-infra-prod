@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"payment","Source":"../../terraform-roboshop-app","Dir":"../../terraform-roboshop-app"},{"Key":"payment.component","Source":"registry.terraform.io/terraform-aws-modules/ec2-instance/aws","Version":"5.7.1","Dir":".terraform/modules/payment.component"}]}

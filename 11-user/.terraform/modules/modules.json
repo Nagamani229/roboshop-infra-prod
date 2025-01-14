@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"user","Source":"../../terraform-roboshop-app","Dir":"../../terraform-roboshop-app"},{"Key":"user.component","Source":"registry.terraform.io/terraform-aws-modules/ec2-instance/aws","Version":"5.7.1","Dir":".terraform/modules/user.component"}]}
