@@ -30,7 +30,14 @@ pipeline {
                 """
             }
         }
-
+      stage('apply') {
+            steps {
+                sh """
+                    cd 01-vpc
+                    terraform apply -auto-approve
+                """
+            }
+        }
         stage('Deploy') {
             // when {
             //     expression { 
