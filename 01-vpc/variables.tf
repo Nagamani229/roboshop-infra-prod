@@ -13,7 +13,7 @@ variable "vpc_tags" {
   default = {}
 }
 
-variable "project-name" {
+variable "project_name" {
   default = "roboshop"
 }
 
