@@ -13,9 +13,9 @@ variable "vpc_tags" {
   default = {}
 }
 
-#variable "project-name" {
-  #default = "roboshop"
-#}
+variable "project-name" {
+  default = "roboshop"
+}
 
 variable "environment" {
   default = "dev"
