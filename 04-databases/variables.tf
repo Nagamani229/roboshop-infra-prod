@@ -14,5 +14,5 @@ variable "environment" {
 }
 
 variable "zone_name" {
-    default = "devopstraining.space"
+  default = "devopstraining.space"
 }

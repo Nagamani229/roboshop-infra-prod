@@ -1,5 +1,5 @@
 module "vpn" {
-  source         = "git::https://github.com/daws-76s/terraform-aws-vpc.git?ref=main"
+  source         = "git::https://github.com/daws-76s/terraform-aws-security-group.git?ref=main"
   project_name   = var.project_name
   environment    = var.environment
   sg_description = "SG for VPN"
@@ -9,7 +9,7 @@ module "vpn" {
 }
 
 module "mongodb" {
-  source         = "git::https://github.com/daws-76s/terraform-aws-vpc.git?ref=main"
+  source         = "git::https://github.com/daws-76s/terraform-aws-security-group.git?ref=main"
   project_name   = var.project_name
   environment    = var.environment
   sg_description = "SG for MongoDB"
@@ -19,7 +19,7 @@ module "mongodb" {
 }
 
 module "redis" {
-  source         = "git::https://github.com/daws-76s/terraform-aws-vpc.git?ref=main"
+  source         = "git::https://github.com/daws-76s/terraform-aws-security-group.git?ref=main"
   project_name   = var.project_name
   environment    = var.environment
   sg_description = "SG for redis"
@@ -29,7 +29,7 @@ module "redis" {
 }
 
 module "mysql" {
-  source         = "git::https://github.com/daws-76s/terraform-aws-vpc.git?ref=main"
+  source         = "git::https://github.com/daws-76s/terraform-aws-security-group.git?ref=main"
   project_name   = var.project_name
   environment    = var.environment
   sg_description = "SG for mysql"
@@ -39,7 +39,7 @@ module "mysql" {
 }
 
 module "rabbitmq" {
-  source         = "git::https://github.com/daws-76s/terraform-aws-vpc.git?ref=main"
+  source         = "git::https://github.com/daws-76s/terraform-aws-security-group.git?ref=main"
   project_name   = var.project_name
   environment    = var.environment
   sg_description = "SG for rabbitmq"
@@ -49,7 +49,7 @@ module "rabbitmq" {
 }
 
 module "catalogue" {
-  source         = "git::https://github.com/daws-76s/terraform-aws-vpc.git?ref=main"
+  source         = "git::https://github.com/daws-76s/terraform-aws-security-group.git?ref=main"
   project_name   = var.project_name
   environment    = var.environment
   sg_description = "SG for catalogue"
@@ -59,7 +59,7 @@ module "catalogue" {
 }
 
 module "user" {
-  source         = "git::https://github.com/daws-76s/terraform-aws-vpc.git?ref=main"
+  source         = "git::https://github.com/daws-76s/terraform-aws-security-group.git?ref=main"
   project_name   = var.project_name
   environment    = var.environment
   sg_description = "SG for user"
@@ -69,7 +69,7 @@ module "user" {
 }
 
 module "cart" {
-  source         = "git::https://github.com/daws-76s/terraform-aws-vpc.git?ref=main"
+  source         = "git::https://github.com/daws-76s/terraform-aws-security-group.git?ref=main"
   project_name   = var.project_name
   environment    = var.environment
   sg_description = "SG for cart"
@@ -79,7 +79,7 @@ module "cart" {
 }
 
 module "shipping" {
-  source         = "git::https://github.com/daws-76s/terraform-aws-vpc.git?ref=main"
+  source         = "git::https://github.com/daws-76s/terraform-aws-security-group.git?ref=main"
   project_name   = var.project_name
   environment    = var.environment
   sg_description = "SG for shipping"
@@ -89,7 +89,7 @@ module "shipping" {
 }
 
 module "payment" {
-  source         = "git::https://github.com/daws-76s/terraform-aws-vpc.git?ref=main"
+  source         = "git::https://github.com/daws-76s/terraform-aws-security-group.git?ref=main"
   project_name   = var.project_name
   environment    = var.environment
   sg_description = "SG for payment"
@@ -99,7 +99,7 @@ module "payment" {
 }
 
 module "web" {
-  source         = "git::https://github.com/daws-76s/terraform-aws-vpc.git?ref=main"
+  source         = "git::https://github.com/daws-76s/terraform-aws-security-group.git?ref=main"
   project_name   = var.project_name
   environment    = var.environment
   sg_description = "SG for web"
@@ -109,17 +109,17 @@ module "web" {
 }
 
 module "app_alb" {
-  source         = "git::https://github.com/daws-76s/terraform-aws-vpc.git?ref=main"
+  source         = "git::https://github.com/daws-76s/terraform-aws-security-group.git?ref=main"
   project_name   = var.project_name
   environment    = var.environment
   sg_description = "SG for APP ALB"
   vpc_id         = data.aws_ssm_parameter.vpc_id.value
-  sg_name        = "app_alb"
+  sg_name        = "app-alb"
   #sg_ingress_rules = var.mongodb_sg_ingress_rules
 }
 
 module "web_alb" {
-  source         = "git::https://github.com/daws-76s/terraform-aws-vpc.git?ref=main"
+  source         = "git::https://github.com/daws-76s/terraform-aws-security-group.git?ref=main"
   project_name   = var.project_name
   environment    = var.environment
   sg_description = "SG for Web ALB"
@@ -325,14 +325,14 @@ resource "aws_security_group_rule" "catalogue_vpn_http" {
   security_group_id        = module.catalogue.sg_id
 }
 
-# resource "aws_security_group_rule" "catalogue_web" {
-#   source_security_group_id = module.web.sg_id
-#   type                     = "ingress"
-#   from_port                = 8080
-#   to_port                  = 8080
-#   protocol                 = "tcp"
-#   security_group_id        = module.catalogue.sg_id
-# }
+ resource "aws_security_group_rule" "catalogue_web" {
+   source_security_group_id = module.web.sg_id
+   type                     = "ingress"
+   from_port                = 8080
+   to_port                  = 8080
+   protocol                 = "tcp"
+   security_group_id        = module.catalogue.sg_id
+ }
 
 resource "aws_security_group_rule" "catalogue_app_alb" {
   source_security_group_id = module.app_alb.sg_id
@@ -343,14 +343,14 @@ resource "aws_security_group_rule" "catalogue_app_alb" {
   security_group_id        = module.catalogue.sg_id
 }
 
-# resource "aws_security_group_rule" "catalogue_cart" {
-#   source_security_group_id = module.cart.sg_id
-#   type                     = "ingress"
-#   from_port                = 8080
-#   to_port                  = 8080
-#   protocol                 = "tcp"
-#   security_group_id        = module.catalogue.sg_id
-# }
+ resource "aws_security_group_rule" "catalogue_cart" {
+   source_security_group_id = module.cart.sg_id
+   type                     = "ingress"
+   from_port                = 8080
+   to_port                  = 8080
+   protocol                 = "tcp"
+   security_group_id        = module.catalogue.sg_id
+ }
 
 resource "aws_security_group_rule" "user_vpn" {
   source_security_group_id = module.vpn.sg_id
@@ -370,23 +370,23 @@ resource "aws_security_group_rule" "user_app_alb" {
   security_group_id        = module.user.sg_id
 }
 
-# resource "aws_security_group_rule" "user_web" {
-#   source_security_group_id = module.web.sg_id
-#   type                     = "ingress"
-#   from_port                = 8080
-#   to_port                  = 8080
-#   protocol                 = "tcp"
-#   security_group_id        = module.user.sg_id
-# }
+ resource "aws_security_group_rule" "user_web" {
+   source_security_group_id = module.web.sg_id
+   type                     = "ingress"
+   from_port                = 8080
+   to_port                  = 8080
+   protocol                 = "tcp"
+   security_group_id        = module.user.sg_id
+ }
 
-# resource "aws_security_group_rule" "user_payment" {
-#   source_security_group_id = module.payment.sg_id
-#   type                     = "ingress"
-#   from_port                = 8080
-#   to_port                  = 8080
-#   protocol                 = "tcp"
-#   security_group_id        = module.user.sg_id
-# }
+ resource "aws_security_group_rule" "user_payment" {
+   source_security_group_id = module.payment.sg_id
+   type                     = "ingress"
+   from_port                = 8080
+   to_port                  = 8080
+   protocol                 = "tcp"
+   security_group_id        = module.user.sg_id
+ }
 
 resource "aws_security_group_rule" "cart_vpn" {
   source_security_group_id = module.vpn.sg_id
@@ -397,14 +397,14 @@ resource "aws_security_group_rule" "cart_vpn" {
   security_group_id        = module.cart.sg_id
 }
 
-# resource "aws_security_group_rule" "cart_web" {
-#   source_security_group_id = module.web.sg_id
-#   type                     = "ingress"
-#   from_port                = 8080
-#   to_port                  = 8080
-#   protocol                 = "tcp"
-#   security_group_id        = module.cart.sg_id
-# }
+ resource "aws_security_group_rule" "cart_web" {
+   source_security_group_id = module.web.sg_id
+   type                     = "ingress"
+   from_port                = 8080
+   to_port                  = 8080
+   protocol                 = "tcp"
+   security_group_id        = module.cart.sg_id
+ }
 
 resource "aws_security_group_rule" "cart_app_alb" {
   source_security_group_id = module.app_alb.sg_id
@@ -442,14 +442,14 @@ resource "aws_security_group_rule" "shipping_vpn" {
   security_group_id        = module.shipping.sg_id
 }
 
-# resource "aws_security_group_rule" "shipping_web" {
-#   source_security_group_id = module.web.sg_id
-#   type                     = "ingress"
-#   from_port                = 8080
-#   to_port                  = 8080
-#   protocol                 = "tcp"
-#   security_group_id        = module.shipping.sg_id
-# }
+ resource "aws_security_group_rule" "shipping_web" {
+   source_security_group_id = module.web.sg_id
+   type                     = "ingress"
+   from_port                = 8080
+   to_port                  = 8080
+   protocol                 = "tcp"
+   security_group_id        = module.shipping.sg_id
+ }
 
 resource "aws_security_group_rule" "shipping_app_alb" {
   source_security_group_id = module.app_alb.sg_id
@@ -469,14 +469,14 @@ resource "aws_security_group_rule" "payment_vpn" {
   security_group_id        = module.payment.sg_id
 }
 
-# resource "aws_security_group_rule" "payment_web" {
-#   source_security_group_id = module.web.sg_id
-#   type                     = "ingress"
-#   from_port                = 8080
-#   to_port                  = 8080
-#   protocol                 = "tcp"
-#   security_group_id        = module.payment.sg_id
-# }
+ resource "aws_security_group_rule" "payment_web" {
+   source_security_group_id = module.web.sg_id
+   type                     = "ingress"
+   from_port                = 8080
+   to_port                  = 8080
+   protocol                 = "tcp"
+   security_group_id        = module.payment.sg_id
+ }
 
 resource "aws_security_group_rule" "payment_app_alb" {
   source_security_group_id = module.app_alb.sg_id

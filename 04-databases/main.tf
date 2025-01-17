@@ -35,7 +35,8 @@ resource "null_resource" "mongodb" {
     source      = "bootstrap.sh"
     destination = "/tmp/bootstrap.sh"
   }
-provisioner "remote-exec" {
+
+  provisioner "remote-exec" {
     # Bootstrap script called with private_ip of each node in the cluster
     inline = [
       "chmod +x /tmp/bootstrap.sh",
@@ -43,7 +44,6 @@ provisioner "remote-exec" {
     ]
   }
 }
-
 
 module "redis" {
   source                 = "terraform-aws-modules/ec2-instance/aws"
@@ -91,6 +91,7 @@ resource "null_resource" "redis" {
     ]
   }
 }
+
 module "mysql" {
   source                 = "terraform-aws-modules/ec2-instance/aws"
   ami = data.aws_ami.centos8.id
