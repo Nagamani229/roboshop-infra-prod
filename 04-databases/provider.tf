@@ -10,10 +10,10 @@ terraform {
 
 terraform {
   backend "s3" {
-    bucket = "devopstraining-dev-state"
+    bucket = "devopstraining-prod-state"
     key    = "databases"
     region = "us-east-1"
-    dynamodb_table = "devopstraining-locking-dev"
+    dynamodb_table = "devopstraining-locking-prod"
   }
 }
 
