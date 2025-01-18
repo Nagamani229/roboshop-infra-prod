@@ -114,7 +114,7 @@ module "app_alb" {
   environment    = var.environment
   sg_description = "SG for APP ALB"
   vpc_id         = data.aws_ssm_parameter.vpc_id.value
-  sg_name        = "app-alb"
+  sg_name        = "app_alb"
   #sg_ingress_rules = var.mongodb_sg_ingress_rules
 }
 
